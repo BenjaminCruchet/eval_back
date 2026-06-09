@@ -1,3 +1,8 @@
 const express = require("express");
-const db = require("connexion");
+const app = express();
+const PORT = 3000;
 
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`le server est lancé sur le port : ${PORT}`);
+});

@@ -1,0 +1,45 @@
+CREATE DATABASE eval_back;
+
+USE eval_back;
+
+CREATE TABLE users (
+id INT AUTO_INCREMENT PRIMARY KEY,
+email VARCHAR(50) UNIQUE,
+password VARCHAR(50),
+nom VARCHAR(50),
+prenom VARCHAR(50),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE concert (
+id INT AUTO_INCREMENT PRIMARY KEY,
+ville VARCHAR(50),
+lieu VARCHAR(50),
+date DATE,
+heure TIME
+);
+
+CREATE TABLE places (
+id_concert INT,
+stock INT CHECK (stock >= 0),
+prix DECIMAL(10,2),
+FOREIGN KEY (id_concert) REFERENCES concert(id) ON DELETE CASCADE
+);
+
+CREATE TABLE billets (
+id INT AUTO_INCREMENT PRIMARY KEY,
+id_concert INT,
+id_commande INT,
+quantity INT NOT NULL,
+prix DECIMAL(10,2),
+FOREIGN KEY (id_concert) REFERENCES concert(id),
+FOREIGN KEY (id_commande) REFERENCES commande(id)
+);
+
+CREATE TABLE commandes (
+id INT AUTO_INCREMENT PRIMARY KEY,
+id_user INT,
+date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+total DECIMAL(10,2),
+FOREIGN KEY (id_user) REFERENCES users(id)
+);
