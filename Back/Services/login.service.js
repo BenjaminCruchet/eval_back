@@ -1,4 +1,4 @@
-const db = require("../Database/mySQL");
+const {pool} = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
 
 async function login(data, session) {
@@ -8,7 +8,7 @@ async function login(data, session) {
         throw new Error("Tous les champs sont obligatoires");
     }
 
-    const [users] = await db.promise().query(
+    const [users] = await pool.query(
         "SELECT * FROM users WHERE email = ?",
         [email]
     );

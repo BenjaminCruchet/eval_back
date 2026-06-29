@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 /* variables */
 
-    /* classes DOM tableau */
+    /* Classes DOM tableau */
     const villes = document.querySelectorAll(".ville");
     const dates = document.querySelectorAll(".date");
     const lieux = document.querySelectorAll(".lieu");
@@ -201,6 +201,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if(nbVilles (ville)> 1){
                 warningDiv.style.display = "inline-block";
             }
+            const concertId = btn.dataset.concertId;
+            popUpReservation.dataset.concertId = concertId;
             popUpReservation.showModal();
             popUpReservation.querySelector("input, select, textarea, button").focus();        
         }); 
@@ -269,7 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("nbPlacesPopUp").textContent = document.getElementById("nbPlace").value;
         document.getElementById("datePopUp").textContent = document.querySelector(".modalDate").textContent;
         document.getElementById("villePopUp").textContent =  document.querySelector(".modalVille").textContent;
-        document.getElementById("totalPopUp").textContent =  document.getElementById("total").textContent;
         popUpCommande.showModal();
         popUpCommande.querySelector("input, select, textarea, button").focus();
         event.preventDefault();

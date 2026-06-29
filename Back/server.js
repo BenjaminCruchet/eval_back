@@ -9,8 +9,9 @@ const { testMySQL } = require("./Database/mySQL");
 
 const visitMiddleware = require('./Middleware/visit.middleware');
 
-const authRoute = require("./Routes/authRoute");
-const pageRoute = require("./Routes/pageRoute");
+const authRoute = require("./Routes/auth.route");
+const pageRoute = require("./Routes/page.route");
+const cartRoute = require("./Routes/cart.route");
 
 const app = express();
 const PORT = 3000;
@@ -43,6 +44,7 @@ async function startServer() {
 
         app.use("/", pageRoute);
         app.use("/api/auth", authRoute);
+        app.use("/cart", cartRoute);
 
 
         app.listen(PORT, () => {

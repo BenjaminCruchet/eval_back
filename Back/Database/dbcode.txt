@@ -44,3 +44,17 @@ date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 total DECIMAL(10,2),
 FOREIGN KEY (id_user) REFERENCES users(id)
 );
+
+CREATE TABLE cart_items (
+id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT NOT NULL,
+concert_id INT NOT NULL,
+quantity INT NOT NULL,
+price DECIMAL(10,2) NOT NULL,
+total DECIMAL(10,2) GENERATED ALWAYS AS (price * quantity) STORED,
+status ENUM('active', 'reserved', 'converted') DEFAULT 'active',
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (user_id) REFERENCES users(id),
+FOREIGN KEY (concert_id) REFERENCES concert(id)
+);

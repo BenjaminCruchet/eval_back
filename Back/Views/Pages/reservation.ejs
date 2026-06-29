@@ -93,7 +93,7 @@
                                     </td>
 
                                     <td>
-                                        <button type="button" class="primary-button openModal">
+                                        <button type="button" class="primary-button openModal" data-concert-id = "<%= concert.id %>">
                                             Réserver
                                         </button>
                                     </td>
@@ -147,28 +147,6 @@
                     </svg>
                 </div>
                 <form id="formPopUpReservation">
-                    <fieldset>
-                        <legend class="legend"> Informations personnelles : </legend>
-                            <div class="conteneur" id="inputConteneur"> 
-                                <div class="conteneurLabelInput">
-                                    <label for="Nom"> Nom<span class = "mandatory">*</span> </label>
-                                    <input type="text" name ="Nom" id="Nom" placeholder ="Durant" required>
-                                </div>
-                                <div class="conteneurLabelInput">
-                                    <label for="Prenom"> Prénom<span class = "mandatory">*</span> </label>
-                                    <input type="text"  name ="Prenom" id="Prenom" placeholder ="Michel" required>
-                                </div>
-                                <div class="conteneurLabelInput">
-                                    <label for="Mail"> Mail<span class = "mandatory">*</span> </label> 
-                                    <input type="email" name ="Mail" id="Mail" placeholder ="durantmichel@gmail.com" required>
-                                </div>
-                                <div class="conteneurLabelInput">
-                                    <label for="Tel"> Téléphone </label>
-                                    <input type="Tel" name ="Tel" id="Tel" pattern="[0][67]([0-9]{2}){4}" placeholder ="0605040302" aria-describedby="phoneHelp">
-                                    <p id="phoneHelp" class="visually-hidden"> Entrez un numéro de téléphone portable à 10 chiffres sans espace </p>
-                                </div>
-                            </div>
-                    </fieldset>
                     <fieldset> 
                         <legend class="legend"> Tarifs : </legend>
                             <p> Tarif unique :
@@ -192,34 +170,26 @@
                         <p> Total : 
                             <span class = textInsert id="total"></span> 
                         </p>
-                        <button type="submit" class="secondary-button" id="reservation"> Réserver </button>
+                        <button type="submit" class="secondary-button" id="reservation"> Ajouter au panier </button>
+                        <a href="/cart"> Voir le panier </a> 
                     </fieldset>
                 </form>
             </dialog>
 
             <dialog class="popUp" id="popUpCommande" aria-labelledby="popUpCommandeTitle">
                 <h2 class="visually-hidden" id="popUpCommandeTitle"> Confirmation de commande </h2>
-                <button type="button" id="retour"> 
-                    <svg id="returnIcon" aria-label="Return icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-                        <title> Return icon </title>
-                        <path d="M280-200v-80h284q63 0 109.5-40T720-420q0-60-46.5-100T564-560H312l104 104-56 56-200-200 200-200 56 56-104 104h252q97 0 166.5 63T800-420q0 94-69.5 157T564-200H280Z"/>
-                    </svg> 
-                </button>
                 <button type="button" class="closeModal"> X </button>
-                <p class="popUpText"> Confirmez-vous l'achat de 
+                <p class="popUpText"> L'ajout de 
                     <span id="nbPlacesPopUp"></span>
                     <span> place(s) pour le concert du </span>
                     <span id="datePopUp"></span>
                     <span> à </span>
                     <span id="villePopUp"></span>
-                    <span> pour un total de </span>
-                    <span id="totalPopUp"></span>
-                    <span> ? </span>
+                    <span> : 20h, a bien été effectué. </span>
                 </p>
-                <p class="popUpText"> Ce concert débutera à 20h. </p>
                 
                 <div class="buttonContainer">     
-                    <button type="button" class="secondary-button" id="validationCommande"> Confirmer </button>
+                    <a href="/cart"> Voir le panier </a> 
                 </div>    
                 
             </dialog>

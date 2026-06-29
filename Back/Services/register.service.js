@@ -1,4 +1,4 @@
-const db = require("../Database/mySQL");
+const {pool} = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
 
 async function register(data) {
@@ -8,7 +8,7 @@ async function register(data) {
         throw new Error("Tous les champs sont obligatoires");
     }
 
-    const [users] = await db.promise().query(
+    const [users] = await pool.query(
         "SELECT * FROM users WHERE email = ?",
         [email]
     );
@@ -19,7 +19,7 @@ async function register(data) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await db.promise().query(
+    await pool.query(
         "INSERT INTO users (email, password) VALUES (?, ?)",
         [email, hashedPassword]
     );
