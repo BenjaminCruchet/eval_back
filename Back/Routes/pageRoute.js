@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const reservationController = require('../Controllers/reservation.controller');
 
 router.get('/register', (req, res) => {
     res.render('register');
 });
 
-router.get('/reservation', (req, res) => {
-    res.render('reservation');
+router.get('/reservation', reservationController.getReservationPage);
+
+router.get('/cart', (req,res) => { 
+    res.render('cart');
 });
 
 router.get('/', (req,res) => {

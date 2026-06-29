@@ -5,7 +5,7 @@ register,
 login,
 logout,
 getCurrentUser
-} = require("../Controllers/authController");
+} = require("../Controllers/auth.controller");
 
 router.post("/register", register);
 router.post("/login", login);

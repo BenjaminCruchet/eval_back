@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Panier - ABGYhuDJ</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/global.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+<header class="container py-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="/" class="btn btn-outline-secondary">← Accueil</a>
+        <h1 class="h3 m-0">Votre panier</h1>
+    </div>
+</header>
+
+<main class="container my-4">
+
+
+    <div id="panierVide" class="alert alert-info d-none">
+        Votre panier est vide.
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Concert</th>
+                    <th>Date</th>
+                    <th>Ville</th>
+                    <th>Lieu</th>
+                    <th>Places</th>
+                    <th>Prix unitaire</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody id="panierBody">
+
+                <tr class="panier-item">
+                    <td class="concert-name">ABGYhuDJ Tour</td>
+                    <td class="concert-date">2026-01-16</td>
+                    <td class="concert-ville">Caen</td>
+                    <td class="concert-lieu">Zénith</td>
+
+                    <td>
+                        <input type="number" class="form-control qty" min="1" value="2">
+                    </td>
+
+                    <td class="unit-price">35€</td>
+
+                    <td class="line-total">70€</td>
+
+                    <td>
+                        <button class="btn btn-danger btn-sm remove-item">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="d-flex justify-content-end mt-4">
+        <div class="card p-3" style="min-width: 250px;">
+            <h5>Total</h5>
+            <p class="h4 mb-3" id="globalTotal">0€</p>
+
+            <button class="btn btn-primary w-100" id="checkoutBtn">
+                Valider la commande
+            </button>
+        </div>
+    </div>
+
+</main>
+
+
+<dialog id="checkoutModal" class="p-4">
+    <h2>Confirmation</h2>
+    <p>Confirmer votre commande ?</p>
+
+    <div class="d-flex gap-2 justify-content-end">
+        <button id="cancelCheckout" class="btn btn-secondary">Annuler</button>
+        <button id="confirmCheckout" class="btn btn-success">Confirmer</button>
+    </div>
+</dialog>
+
+<footer>
+    <p id="pFooter"> &copy; ABGYhuDJ. Tous droits réservés. </p>
+</footer>
+
+<script src="/JavaScript/cart.js"></script>
+
+</body>
+</html>

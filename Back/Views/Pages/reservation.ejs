@@ -14,6 +14,11 @@
 
     <body>
         <header>
+            <a href="/cart" class="cart-icon" aria-label="Voir mon panier">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cart-svg">
+                    <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.2 14h9.93c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.6 5H6.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 16.37 5.48 18 7 18h12v-2H7.42a.25.25 0 0 1-.22-.37l.9-1.63z"/>
+                </svg>
+            </a>
             <a id="homeLink" href="/" title="Accueil">
                 <svg id="home" role="graphics-symbol" aria-label="home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <title>home</title>
@@ -73,127 +78,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="ligne">
-                                <td class="date">16/01/2026</td>
-                                <td class="ville">Caen</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                             <tr class="ligne">
-                                <td class="date">30/01/2026</td>
-                                <td class="ville">Bordeaux</td>
-                                <td class="lieu">Arkéa Arena</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">13/02/2026</td>
-                                <td class="ville">Strasbourg</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">27/02/2026</td>
-                                <td class="ville">Nice</td>
-                                <td class="lieu">Palais Nikaïa</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
+                            <% concerts.forEach(concert => { %>
                                 <tr class="ligne">
-                                <td class="date">13/03/2026</td>
-                                <td class="ville">Nantes</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">27/03/2026</td>
-                                <td class="ville">Lille</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">10/04/2026</td>
-                                <td class="ville">Dijon</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">24/04/2026</td>
-                                <td class="ville">Lyon-Décines</td>
-                                <td class="lieu">LDLC Arena</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">08/05/2026</td>
-                                <td class="ville">Clermont-Ferrand</td>
-                                <td class="lieu">Zénith d'Auvergne</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">22/05/2026</td>
-                                <td class="ville">Orléans</td>
-                                <td class="lieu">Co'met</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">05/06/2026</td>
-                                <td class="ville">Reims</td>
-                                <td class="lieu">Arena</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">19/06/2026</td>
-                                <td class="ville">Limoges</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">11/09/2026</td>
-                                <td class="ville">Paris</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">12/09/2026</td>
-                                <td class="ville">Paris</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">13/09/2026</td>
-                                <td class="ville">Paris</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">25/09/2026</td>
-                               <td class="ville">Rouen</td>
-                                <td class="lieu">Zénith</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">09/10/2026</td>
-                                <td class="ville">Marseille</td>
-                                <td class="lieu">Le Dôme</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">23/10/2026</td>
-                                <td class="ville">Montpellier</td>
-                                <td class="lieu">Sud de France Arena</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">06/11/2026</td>
-                                <td class="ville">Le Mans</td>
-                                <td class="lieu"> Antarès </td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
-                            <tr class="ligne">
-                                <td class="date">20/11/2026</td>
-                                <td class="ville">Laval</td>
-                                <td class="lieu">Le 6 par 4</td>
-                                <td><button type="button" class="primary-button openModal"> Réserver </button></td>
-                            </tr>
+                                    <td class="date">
+                                        <%= concert.date %>
+                                    </td>
 
+                                    <td class="ville">
+                                        <%= concert.ville %>
+                                    </td>
+
+                                    <td class="lieu">
+                                        <%= concert.lieu %>
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="primary-button openModal">
+                                            Réserver
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }) %>
                         </tbody>
                     </table>
                 </div>

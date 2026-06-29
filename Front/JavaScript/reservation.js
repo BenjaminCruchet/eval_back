@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", () => {
 /* variables */
 
     /* classes DOM tableau */
@@ -20,15 +21,16 @@
 
     /* Tableaux dates/villes/lieux*/
     const tableauDates = Array.from(dates, function(date){
-        return date.textContent;
+        return date.textContent.trim();
     });
 
     const tableauVilles = Array.from(villes, function(ville){
-        return ville.textContent;
+        return ville.textContent.trim();
     });
+    console.log("VILLE RAW :", JSON.stringify(tableauVilles));
 
     const tableauLieux = Array.from(lieux, function(lieu){
-        return lieu.textContent;
+        return lieu.textContent.trim();
     });
 
     /* Tableaux dates/villes/lieux uniques */
@@ -98,10 +100,10 @@
 
         document.querySelectorAll(".ligne").forEach(function(ligne){
 
-            const recherche = searchBarre.value.toLowerCase();
-            const ville = ligne.querySelector(".ville").textContent.toLowerCase();
-            const date = ligne.querySelector(".date").textContent.toLowerCase();
-            const lieu = ligne.querySelector(".lieu").textContent.toLowerCase();
+            const recherche = searchBarre.value.toLowerCase().trim();
+            const ville = ligne.querySelector(".ville").textContent.toLowerCase().trim();
+            const date = ligne.querySelector(".date").textContent.toLowerCase().trim();
+            const lieu = ligne.querySelector(".lieu").textContent.toLowerCase().trim();
 
             if( recherche === ville || recherche === date || recherche === lieu ){
                 ligne.style.display = "table-row";
@@ -140,7 +142,7 @@
     function donneesDateVilleLieu(champ){
         let found = false;
         for(let i=0; i<tableauVilles.length; i++){
-            if (tableauVilles[i].toLowerCase() === champ.toLowerCase()) {
+            if (tableauVilles[i].toLowerCase().trim() === champ.toLowerCase() || tableauDates[i].toLowerCase().trim() === champ.toLowerCase() ||tableauLieux[i].toLowerCase().trim() === champ.toLowerCase()) {
                 document.querySelectorAll(".modalVille").forEach(function(element){
                     element.textContent = tableauVilles[i];
                 })
@@ -231,11 +233,13 @@
     
     /* Au clic d'une suggestion mettre en forme le tableau, générer popUpError au besoin */
     
-    suggestionContainer.addEventListener("click",function(){
-        searchBarre.value = suggestionContainer.textContent;
+    suggestionContainer.addEventListener("click", function(e){
+    if (e.target && e.target.textContent) {
+        searchBarre.value = e.target.textContent;
         MEFTableau();
         errorSearchForm();
-    });
+    }
+});
      
     /* Générer les suggestions a chaque input dans le champ de recherche */
     searchBarre.addEventListener("input",function(){
@@ -286,3 +290,6 @@
         popUpConfirmation.showModal();
         popUpConfirmation.querySelector("input, select, textarea, button").focus();
     });
+
+    console.log("JS LOADED");
+});
