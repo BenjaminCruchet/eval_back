@@ -1,4 +1,4 @@
-const db = require("../Database/db");
+const db = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
 
 async function register(data) {
@@ -25,6 +25,7 @@ async function register(data) {
     );
 
     return { message: "Utilisateur créé avec succès" };
+    
 }
 
 module.exports = {

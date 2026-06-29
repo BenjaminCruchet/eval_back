@@ -1,4 +1,4 @@
-const db = require("../Database/db");
+const db = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
 
 async function login(data, session) {

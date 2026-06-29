@@ -115,6 +115,34 @@ footer{
     color: #FFFFFF;
 }
 
+/* encart de connexion */
+
+.login-box {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.login-box form {
+    display: flex !important;
+    gap: 8px !important;
+}
+
+.login-box input {
+    padding: 6px;
+    font-size: 14px;
+}
+
+.register-text {
+    margin-top: 10px;
+    font-size: 12px;
+    color : white;
+}
+
 /* classes cachées pour lecteur écran */
 .visually-hidden {
   position: absolute;
