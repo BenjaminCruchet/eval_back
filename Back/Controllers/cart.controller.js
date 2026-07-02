@@ -21,6 +21,7 @@ async function cartPage(req, res) {
         const items = await cartService.getCart(userId);
 
         res.render("cart", {
+            titre : "Mon panier",
             items: items || []
         });
 
@@ -28,6 +29,7 @@ async function cartPage(req, res) {
         console.error(err);
 
         res.render("cart", {
+            titre : "Mon panier",
             items: []
         });
     }

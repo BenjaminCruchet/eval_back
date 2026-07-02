@@ -17,6 +17,7 @@ async function getReservationPage(req, res) {
         `);
 
         res.render("reservation", {
+            titre : "Toutes les dates",
             concerts
         });
 
