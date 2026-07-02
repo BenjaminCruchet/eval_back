@@ -20,7 +20,17 @@ async function renderAuthUI() {
             loginBox.appendChild(p);
         }
 
-    } else {
+    } else if (data.user.role === "admin"){
+        form.style.display = "none";
+        loginBox.innerHTML = `
+            <p>Connecté : ${data.user.email}</p>
+            <a href="/admin"> PageAdmin </button>
+            <form action="/api/auth/logout" method="POST">
+            <button> Déconnexion</button>
+            </form>
+        `
+
+    }else {
 
         form.style.display = "none";
 
@@ -32,4 +42,5 @@ async function renderAuthUI() {
         `;
     }
 }
-    renderAuthUI();
+
+renderAuthUI();

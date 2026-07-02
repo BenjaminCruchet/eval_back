@@ -1,5 +1,5 @@
-const {pool} = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
+const userRepository = require("../Repository/user.repository");
 const logs = require("./log.service");
 
 async function login(data, session) {
@@ -9,21 +9,16 @@ async function login(data, session) {
         throw new Error("Tous les champs sont obligatoires");
     }
 
-    const [users] = await pool.query(
-        "SELECT * FROM users WHERE email = ?",
-        [email]
-    );
+    const user = await userRepository.findByEmail(email);
 
-    if (users.length === 0) {
-        throw new Error("Utilisateur introuvable");
+    if (!user) {
+        throw new Error("Adresse mail ou mot de passe incorrect");
     }
-
-    const user = users[0];
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-        throw new Error("Mot de passe incorrect");
+        throw new Error("Adresse mail ou mot de passe incorrect");
     }
 
     session.user = {
@@ -32,11 +27,12 @@ async function login(data, session) {
         role: user.role
     };
 
+    await logs.login(user.id);
+
     return {
         message: "Connexion réussie",
         user: session.user
     };
-    await logs.login(req.session.user.id);
 }
 
 module.exports = {

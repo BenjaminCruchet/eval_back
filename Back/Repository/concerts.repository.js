@@ -6,7 +6,7 @@ async function getAllConcerts() {
             c.id,
             c.ville,
             c.lieu,
-            DATE_FORMAT(c.date, '%d/%m/%Y') AS date
+            DATE_FORMAT(c.date, '%d/%m/%Y') AS date,
             p.stock,
             p.prix
         FROM concert c

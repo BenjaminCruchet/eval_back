@@ -13,7 +13,8 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const result = await loginService.login(req.body, req.session);
-        return res.redirect("/");
+        return res.redirect(req.headers.referer || "/");
+        
     } catch (err) {
         res.status(401).json({ message: err.message });
     }
@@ -21,7 +22,7 @@ const login = async (req, res) => {
 
 function logout(req, res) {
     req.session.destroy(() => {
-        res.redirect('/');
+        return res.redirect(req.headers.referer || "/");
     });
 }
 

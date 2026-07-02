@@ -5,7 +5,8 @@ const TRACKED_ROUTES = [
     '/reservation',
     '/login',
     '/register',
-    '/cart'
+    '/cart',
+    '/admin'
 ];
 
 async function visitMiddleware(req, res, next) {

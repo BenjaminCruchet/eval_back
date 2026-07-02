@@ -182,3 +182,12 @@ footer{
     transform: scale(1.05);
     transition: transform 0.15s ease;
   }
+
+  #home{
+    position : absolute;
+    fill: #FFFFFF;
+    width: clamp(1.5rem,6vw,3.5rem);
+    height: clamp(1.5rem,6vw,3.5rem);
+    left : 10px;
+    bottom : 1.5em;
+}

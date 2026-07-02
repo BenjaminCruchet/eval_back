@@ -14,7 +14,9 @@ router.get('/register', (req, res) => {
 router.get('/reservation', reservationController.getReservationPage);
 
 router.get('/', (req,res) => {
-    res.render('index');
+    res.render('index', {
+        titre : 'ABGYhuDJ : la tournée'
+    });
 })
 
 router.get('/admin', authMiddleware.isAuthenticated, authMiddleware.isAdmin, adminController.adminPage);

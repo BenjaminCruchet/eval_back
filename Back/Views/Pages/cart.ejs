@@ -12,12 +12,7 @@
 
 <body>
 
-<header class="container py-3">
-    <div class="d-flex justify-content-between align-items-center">
-        <a href="/" class="btn btn-outline-secondary">← Accueil</a>
-        <h1 class="h3 m-0">Votre panier</h1>
-    </div>
-</header>
+ <%- include('../Partials/header') %>
 
 <main class="container my-4">
 
@@ -91,6 +86,7 @@
         </div>
     </div>
 
+
 </main>
 
 
@@ -104,11 +100,12 @@
     </div>
 </dialog>
 
-<footer>
-    <p id="pFooter"> &copy; ABGYhuDJ. Tous droits réservés. </p>
-</footer>
+<%- include('../Partials/contact') %>
+
+</body>
+
+<%- include('../Partials/footer') %>
 
 <script src="/JavaScript/cart.js"></script>
 
-</body>
 </html>

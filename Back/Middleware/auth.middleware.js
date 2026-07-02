@@ -1,16 +1,13 @@
-// VERIFICATION SESSION UTILISATEUR
+const isAuthenticated = (req, res, next) => {    
 
-const isAuthenticated = (req, res, next) => {
-
-if (req.session.user) {
-    return next();
-}
-res.status(401).json({
-    message: "Accès non autorisé"
-});
+    if (req.session.user) {
+        return next();
+    }
+    res.status(401).json({
+        message: "Accès non autorisé"
+    });
 };
 
-// VERIFICATION ADMIN
 
 const isAdmin = (req, res, next) => {
 
