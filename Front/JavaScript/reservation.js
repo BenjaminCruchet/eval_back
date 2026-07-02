@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const popUpError = document.getElementById("popUpError");
     const popUpCommande = document.getElementById("popUpCommande");
     const popUpConfirmation = document.getElementById("popUpConfirmation");
+    const reservationForm = document.getElementById("formPopUpReservation");
 
     /* Tableaux dates/villes/lieux*/
     const tableauDates = Array.from(dates, function(date){
@@ -27,7 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableauVilles = Array.from(villes, function(ville){
         return ville.textContent.trim();
     });
-    console.log("VILLE RAW :", JSON.stringify(tableauVilles));
 
     const tableauLieux = Array.from(lieux, function(lieu){
         return lieu.textContent.trim();
@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
         errorSearchForm();
     });
 
-    /* Remplir et ouvrir popUpCommande */
+    /* Remplir et ouvrir popUpCommande
     document.getElementById("formPopUpReservation").addEventListener("submit", function(event){
         document.getElementById("nbPlacesPopUp").textContent = document.getElementById("nbPlace").value;
         document.getElementById("datePopUp").textContent = document.querySelector(".modalDate").textContent;
@@ -275,22 +275,56 @@ document.addEventListener("DOMContentLoaded", () => {
         popUpCommande.querySelector("input, select, textarea, button").focus();
         event.preventDefault();
     });
+    */
 
-
-    /* Clic retour vers popUpReservation */
+    /* Clic retour vers popUpReservation 
     document.getElementById("retour").addEventListener("click",function(){
         popUpCommande.close();
         popUpReservation.showModal();
         popUpReservation.querySelector("input, select, textarea, button").focus();
     });
+    */
 
-    /* Ouvrir popUp confirmation de commande */
+    /* Ouvrir popUp confirmation de commande 
     document.getElementById("validationCommande").addEventListener("click",function(){
         popUpCommande.close();
         document.getElementById("Usermail").textContent = document.getElementById("Mail").value;
         popUpConfirmation.showModal();
         popUpConfirmation.querySelector("input, select, textarea, button").focus();
     });
+    */
+    /* Ajouter un produit au panier */
+
+    reservationForm.addEventListener("submit", async(e) => {
+            console.log("SUBMIT FIRED");
+            e.preventDefault();
+            const concertId = Number(popUpReservation.dataset.concertId);
+            const quantity = Number(document.getElementById("nbPlace").value);
+            const price = Number(document.getElementById("PU").textContent);
+            try {
+                const response = await fetch("/cart/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        concertId,
+                        quantity,
+                        price
+                    })
+                });
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message);
+                }
+                popUpReservation.close();
+                alert(result.message);
+            } catch (err) {
+                alert(err.message);
+            }
+    });
 
     console.log("JS LOADED");
+
 });
+
