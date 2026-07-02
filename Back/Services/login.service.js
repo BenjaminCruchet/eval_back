@@ -1,5 +1,6 @@
 const {pool} = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
+const logs = require("./log.service");
 
 async function login(data, session) {
     const { email, password } = data;
@@ -35,6 +36,7 @@ async function login(data, session) {
         message: "Connexion réussie",
         user: session.user
     };
+    await logs.login(req.session.user.id);
 }
 
 module.exports = {

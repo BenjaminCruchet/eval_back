@@ -16,8 +16,6 @@ async function getReservationPage(req, res) {
             ORDER BY c.date ASC
         `);
 
-        console.log(concerts);
-
         res.render("reservation", {
             concerts
         });

@@ -1,4 +1,4 @@
-const { logVisit } = require('../Services/visit.service');
+const { logEvent } = require('../Services/log.service');
 
 const TRACKED_ROUTES = [
     '/',
@@ -10,18 +10,18 @@ const TRACKED_ROUTES = [
 
 async function visitMiddleware(req, res, next) {
 
-    if (!TRACKED_ROUTES.includes(req.path)) {
+    if (!TRACKED_ROUTES.includes(req.path.split("?")[0])) {
         return next();
     }
 
     try {
-        await logVisit({
+        await logEvent({
+            type: "VISIT",
             route: req.originalUrl,
             method: req.method,
             sessionId: req.sessionID,
-            userId: req.session?.userId ?? null,
-            userAgent: req.get('user-agent'),
-            createdAt: new Date()
+            userId: req.session?.user?.id ?? null,
+            userAgent: req.get('user-agent')
         });
     } catch (err) {
         console.error('Erreur log visite :', err);

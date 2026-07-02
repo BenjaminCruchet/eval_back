@@ -1,5 +1,6 @@
 const {pool} = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
+const logs = require("./log.service");
 
 async function register(data) {
     const { email, password } = data;
