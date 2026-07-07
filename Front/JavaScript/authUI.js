@@ -23,11 +23,13 @@ async function renderAuthUI() {
     } else if (data.user.role === "admin"){
         form.style.display = "none";
         loginBox.innerHTML = `
-            <p>Connecté : ${data.user.email}</p>
-            <a href="/admin"> PageAdmin </button>
+            <p style="color:white">Connecté : ${data.user.email}</p>
+            <div class="d-flex flex-row gap-3">
+            <a class="secondary-button" href="/admin"> PageAdmin </a>
             <form action="/api/auth/logout" method="POST">
-            <button> Déconnexion</button>
+            <button class="secondary-button"> Déconnexion</button>
             </form>
+            </div>
         `
 
     }else {

@@ -191,3 +191,7 @@ footer{
     left : 10px;
     bottom : 1.5em;
 }
+
+.register-text{
+    font-size : clamp(0.5rem, 2vw, 1.4rem);
+}
