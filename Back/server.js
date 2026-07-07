@@ -12,6 +12,7 @@ const visitMiddleware = require('./Middleware/visit.middleware');
 const authRoute = require("./Routes/auth.route");
 const pageRoute = require("./Routes/page.route");
 const cartRoute = require("./Routes/cart.route");
+const adminRoute = require("./Routes/admin.route");
 
 const app = express();
 const PORT = 3000;
@@ -45,6 +46,7 @@ async function startServer() {
         app.use("/", pageRoute);
         app.use("/api/auth", authRoute);
         app.use("/cart", cartRoute);
+        app.use("/admin", adminRoute);
 
 
         app.listen(PORT, () => {

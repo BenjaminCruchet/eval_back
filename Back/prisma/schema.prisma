@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model billets {
+  id          Int       @id @default(autoincrement())
+  id_concert  Int?
+  id_commande Int?
+  quantity    Int
+  prix        Decimal?  @db.Decimal(10, 2)
+  concert     concert?  @relation(fields: [id_concert], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "billets_ibfk_1")
+  commande    commande? @relation(fields: [id_commande], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "billets_ibfk_2")
+
+  @@index([id_commande], map: "id_commande")
+  @@index([id_concert], map: "id_concert")
+}
+
+model cart_items {
+  id         Int                @id @default(autoincrement())
+  user_id    Int
+  concert_id Int
+  quantity   Int
+  price      Decimal            @db.Decimal(10, 2)
+  total      Decimal?           @db.Decimal(10, 2)
+  status     cart_items_status? @default(active)
+  created_at DateTime?          @default(now()) @db.Timestamp(0)
+  updated_at DateTime?          @default(now()) @db.Timestamp(0)
+  users      users              @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_ibfk_1")
+  concert    concert            @relation(fields: [concert_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cart_items_ibfk_2")
+
+  @@index([concert_id], map: "concert_id")
+  @@index([user_id], map: "user_id")
+}
+
+model commande {
+  id            Int       @id @default(autoincrement())
+  id_user       Int?
+  date_commande DateTime? @default(now()) @db.Timestamp(0)
+  total         Decimal?  @db.Decimal(10, 2)
+  billets       billets[]
+  users         users?    @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "commande_ibfk_1")
+
+  @@index([id_user], map: "id_user")
+}
+
+model commandes {
+  id            Int       @id @default(autoincrement())
+  id_user       Int?
+  date_commande DateTime? @default(now()) @db.Timestamp(0)
+  total         Decimal?  @db.Decimal(10, 2)
+  users         users?    @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "commandes_ibfk_1")
+
+  @@index([id_user], map: "id_user")
+}
+
+model concert {
+  id         Int          @id @default(autoincrement())
+  ville      String?      @db.VarChar(50)
+  lieu       String?      @db.VarChar(50)
+  date       DateTime?    @db.Date
+  heure      DateTime?    @db.Time(0)
+  billets    billets[]
+  cart_items cart_items[]
+  places     places[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model places {
+  id_concert Int?
+  stock      Int?
+  prix       Decimal? @db.Decimal(10, 2)
+  id         Int      @id @default(autoincrement())
+  concert    concert? @relation(fields: [id_concert], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "places_ibfk_1")
+
+  @@index([id_concert], map: "id_concert")
+}
+
+model users {
+  id         Int          @id @default(autoincrement())
+  email      String       @unique(map: "email") @db.VarChar(50)
+  password   String       @db.VarChar(255)
+  nom        String?      @db.VarChar(50)
+  prenom     String?      @db.VarChar(50)
+  created_at DateTime?    @default(now()) @db.Timestamp(0)
+  role       users_role?  @default(user)
+  cart_items cart_items[]
+  commande   commande[]
+  commandes  commandes[]
+}
+
+enum users_role {
+  user
+  admin
+}
+
+enum cart_items_status {
+  active
+  reserved
+  converted
+}

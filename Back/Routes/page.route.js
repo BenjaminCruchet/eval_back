@@ -7,7 +7,7 @@ const authMiddleware = require('../Middleware/auth.middleware');
 
 router.get('/register', (req, res) => {
     res.render('register', {
-        titre : "Créer mon compte"
+        titre : "S'inscrire"
     });
 });
 

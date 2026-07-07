@@ -18,6 +18,36 @@ async function adminPage(req, res) {
     }
 }
 
+async function createConcert(req, res) {
+    try {
+        const result = await adminService.createConcert(req.body);
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+async function updateConcert(req, res) {
+    try {
+        const result = await adminService.updateConcert(req.params.id, req.body);
+        res.json(result);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+async function deleteConcert(req, res) {
+    try {
+        await adminService.deleteConcert(req.params.id);
+        res.json({ message: "Concert supprimé" });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
 module.exports = {
-    adminPage
+    adminPage,
+    createConcert,
+    updateConcert,
+    deleteConcert
 };

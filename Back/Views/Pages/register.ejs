@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Inscription</title>
-    <link rel="stylesheet" href="../CSS/global.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/webp" href="/Images/logo.webp">
+    <link rel="stylesheet" href="/CSS/global.css">
 </head>
-<body class="auth-page">
+<body>
 
  <%- include('../Partials/header') %>
+ <%- include('../Partials/logbox') %>
 
 <div class="container">
 
-    <h1>Créer un compte</h1>
     <form id="registerForm" method="POST">
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Mot de passe">
@@ -26,7 +29,7 @@
 
 <%- include('../Partials/footer') %>
 
-<script src="../JavaScript/auth.js"></script>
+<script src="/JavaScript/auth.js"></script>
 
 
 </body>

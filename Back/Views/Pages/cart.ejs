@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <title>Panier - ABGYhuDJ</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/webp" href="/Images/logo.webp">
     <link rel="stylesheet" href="/CSS/global.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 </head>
 
 <body>
 
- <%- include('../Partials/header') %>
-
+<%- include('../Partials/header') %>
+<%- include('../Partials/logbox') %>
 <main class="container my-4">
 
 
@@ -80,8 +83,20 @@
             <h5>Total</h5>
             <p class="h4 mb-3" id="globalTotal">0€</p>
 
-            <button class="btn btn-primary w-100" id="checkoutBtn">
+            <button class="btn secondary-button" id="checkoutBtn">
                 Valider la commande
+            </button>
+
+            <br>
+
+            <a href="/reservation" class="btn secondary-button w-100" id="goToReservation">
+                Ajouter des articles
+            </a>
+
+            <br>
+
+            <button class="btn secondary-button w-100" id="clearCart">
+                Vider le panier
             </button>
         </div>
     </div>
@@ -107,5 +122,6 @@
 <%- include('../Partials/footer') %>
 
 <script src="/JavaScript/cart.js"></script>
+<script src="/JavaScript/authUI.js"></script>
 
 </html>
