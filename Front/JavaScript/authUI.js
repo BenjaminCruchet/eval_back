@@ -1,3 +1,28 @@
+loginForm.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const response = await fetch(loginForm.action, {
+        method: "POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body: JSON.stringify({
+            email: loginForm.email.value,
+            password: loginForm.password.value
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        alert(data.message);
+        return;
+    }
+
+    window.location.reload();
+});
+
 async function renderAuthUI() {
 
     const res = await fetch("/api/auth/me", {

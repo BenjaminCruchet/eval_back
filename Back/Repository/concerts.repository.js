@@ -1,73 +1,105 @@
-const { pool } = require('../Database/mySQL');
+const prisma = require("../Database/prisma");
 
 async function getAllConcerts() {
-    const [rows] = await pool.query(`
-        SELECT 
-            c.id,
-            c.ville,
-            c.lieu,
-            c.date,
-            DATE_FORMAT(c.date, '%d/%m/%Y') AS formatedDate,
-            p.stock,
-            p.prix
-        FROM concert c
-        LEFT JOIN places p ON p.id_concert = c.id
-        ORDER BY c.date ASC
-    `);
 
-    return rows;
+    const concerts = await prisma.concert.findMany({
+        include:{
+            places:true
+        }
+    });
+
+    return concerts.map(concert => ({
+        ...concert,
+        formatedDate: concert.date.toLocaleDateString("fr-FR"),
+        stock: concert.places[0]?.stock,
+        prix: concert.places[0]?.prix
+    }));
 }
 
 async function getConcertById(id) {
-    const [rows] = await pool.query(`
-        SELECT 
-            c.id,
-            c.ville,
-            c.lieu,
-            c.date,
-            DATE_FORMAT(c.date, '%d/%m/%Y') AS formatedDate,
-            p.stock,
-            p.prix
-        FROM concert c
-        LEFT JOIN places p ON p.id_concert = c.id
-        WHERE c.id = ?
-    `, [id]);
 
-    return rows[0] || null;
+    const concert = await prisma.concert.findUnique({
+        where: {
+            id: Number(id)
+        },
+        include: {
+            places: true
+        }
+    });
+
+    if (!concert) return null;
+
+    return {
+        ...concert,
+        stock: concert.places[0]?.stock,
+        prix: concert.places[0]?.prix,
+        formatedDate: concert.date.toLocaleDateString("fr-FR")
+    };
 }
 
 async function createConcert(data) {
+
     const { ville, lieu, date, stock, prix } = data;
 
-    const [result] = await pool.query(
-        "INSERT INTO concert (ville, lieu, date) VALUES (?, ?, ?)",
-        [ville, lieu, date]
-    );
-
-    await pool.query(
-        "INSERT INTO places (id_concert, stock, prix) VALUES (?, ?, ?)",
-        [result.insertId, stock, prix]
-    );
-
-    return result;
+    return prisma.concert.create({
+        data: {
+            ville,
+            lieu,
+            date: new Date(date),
+            places: {
+                create: {
+                    stock: Number(stock),
+                    prix: Number(prix)
+                }
+            }
+        },
+        include: {
+            places: true
+        }
+    });
 }
 
 async function updateConcert(id, data) {
+
     const { ville, lieu, date, stock, prix } = data;
 
-    await pool.query(
-        "UPDATE concert SET ville=?, lieu=?, date=? WHERE id=?",
-        [ville, lieu, date, id]
-    );
+    await prisma.concert.update({
+        where:{
+            id:Number(id)
+        },
+        data:{
+            ville,
+            lieu,
+            date:new Date(date)
+        }
+    });
 
-    await pool.query(
-        "UPDATE places SET stock=?, prix=? WHERE id_concert=?",
-        [stock, prix, id]
-    );
+
+    await prisma.places.update({
+        where:{
+            id_concert:Number(id)
+        },
+        data:{
+            stock:Number(stock),
+            prix:Number(prix)
+        }
+    });
 }
 
-async function deleteConcert(id) {
-    await pool.query("DELETE FROM concert WHERE id = ?", [id]);
+async function deleteConcert(id){
+
+    await prisma.places.deleteMany({
+        where:{
+            id_concert:Number(id)
+        }
+    });
+
+
+    await prisma.concert.delete({
+        where:{
+            id:Number(id)
+        }
+    });
 }
 
 module.exports = {

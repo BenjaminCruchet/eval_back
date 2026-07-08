@@ -11,9 +11,12 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+     console.log("LOGIN BODY :", req.body);
     try {
-        const result = await loginService.login(req.body, req.session);
-        return res.redirect(req.headers.referer || "/");
+        await loginService.login(req.body, req.session);
+        return res.json({
+            success:true
+        });
         
     } catch (err) {
         res.status(401).json({ message: err.message });

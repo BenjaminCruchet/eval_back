@@ -1,79 +1,122 @@
-const { pool } = require("../Database/mySQL");
+const prisma = require("../Database/prisma");
 
-/* récupérer un item existant */
-async function getItem(userId, concertId) {
-    const [rows] = await pool.query(
-        `SELECT * FROM cart_items 
-         WHERE user_id = ? AND concert_id = ?`,
-        [userId, concertId]
-    );
 
-    return rows[0];
-}
-
-/* ajouter */
-async function addItem(userId, concertId, quantity, price) {
-    await pool.query(
-        `INSERT INTO cart_items (user_id, concert_id, quantity, price)
-         VALUES (?, ?, ?, ?)`,
-        [userId, concertId, quantity, price]
-    );
-}
-
-/* update quantité from /reservation */
-async function updateQuantity(id, quantity) {
-    await pool.query(
-        `UPDATE cart_items SET quantity = ? WHERE id = ?`,
-        [quantity, id]
-    );
-}
-
-/* affichage */
 async function getCartItems(userId) {
-    const [rows] = await pool.query(`
-        SELECT 
-            ci.id,
-            ci.concert_id,
-            ci.quantity,
-            ci.price,
-            ci.total,
 
-            c.ville,
-            c.lieu,
-            DATE_FORMAT(c.date, '%d/%m/%Y') AS date
+    const items = await prisma.cart_items.findMany({
+        where:{
+            user_id:userId,
+            status:"active"
+        },
+        include:{
+            concert:true
+        }
+    });
 
-        FROM cart_items ci
-        JOIN concert c ON c.id = ci.concert_id
-        WHERE ci.user_id = ? AND ci.status = 'active'
-    `, [userId]);
-
-    return rows;
+    return items.map(item => ({
+        id:item.id,
+        concert_id:item.concert_id,
+        quantity:item.quantity,
+        price:item.price,
+        total:item.total,
+        ville:item.concert.ville,
+        lieu:item.concert.lieu,
+        date:item.concert.date.toLocaleDateString("fr-FR")
+    }));
 }
 
-/* update quantity */
+async function getItem(userId, concertId) {
+
+    return prisma.cart_items.findFirst({
+        where: {
+            user_id: userId,
+            concert_id: concertId
+        }
+    });
+}
+
+async function addItem(userId, concertId, quantity, price) {
+
+    return prisma.cart_items.create({
+        data: {
+            user_id: userId,
+            concert_id: concertId,
+            quantity,
+            price,
+            total: price * quantity,
+            status: "active"
+        }
+    });
+}
+
+async function updateQuantity(id, quantity) {
+
+    return prisma.cart_items.update({
+        where: {
+            id: Number(id)
+        },
+        data: {
+            quantity
+        }
+    });
+}
+
+async function getCartItems(userId) {
+
+    const items = await prisma.cart_items.findMany({
+
+        where: {
+            user_id: userId,
+            status: "active"
+        },
+
+        include: {
+            concert: true
+        }
+    });
+
+
+    return items.map(item => ({
+
+        id: item.id,
+        concert_id: item.concert_id,
+        quantity: item.quantity,
+        price: item.price,
+        total: item.total,
+
+        ville: item.concert.ville,
+        lieu: item.concert.lieu,
+        date: item.concert.date.toLocaleDateString("fr-FR")
+
+    }));
+}
 async function updateQuantityInCart(id, quantity) {
-    return pool.query(
-        `UPDATE cart_items
-         SET quantity = ?, total = price * ?
-         WHERE id = ?`,
-        [quantity, quantity, id]
-    );
+
+    return prisma.cart_items.update({
+
+        where:{
+            id:Number(id)
+        },
+
+        data:{
+            quantity,
+            total:{
+                set: quantity * item.price
+            }
+        }
+    });
 }
 
-/*remove item */
 async function deleteItem(userId, cartId) {
 
-    console.log("DELETE INPUT:", { userId, cartId });
+    return prisma.cart_items.deleteMany({
 
-    const [result] = await pool.query(
-        `DELETE FROM cart_items
-         WHERE id = ? AND user_id = ?`,
-        [cartId, userId]
-    );
+        where:{
+            id:Number(cartId),
+            user_id:userId
+        }
 
-    console.log("MYSQL RESULT:", result);
-
-    return result;
+    });
 }
 
 module.exports = {

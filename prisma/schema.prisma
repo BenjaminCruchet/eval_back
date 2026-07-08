@@ -1,20 +1,20 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model billets {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   id_concert  Int?
   id_commande Int?
   quantity    Int
-  prix        Decimal?  @db.Decimal(10, 2)
-  concert     concert?  @relation(fields: [id_concert], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "billets_ibfk_1")
-  commande    commande? @relation(fields: [id_commande], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "billets_ibfk_2")
+  prix        Decimal?   @db.Decimal(10, 2)
+  concert     concert?   @relation(fields: [id_concert], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "billets_ibfk_1")
+  commandes   commandes? @relation(fields: [id_commande], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "billets_ibfk_2")
 
   @@index([id_commande], map: "id_commande")
   @@index([id_concert], map: "id_concert")
@@ -37,22 +37,12 @@ model cart_items {
   @@index([user_id], map: "user_id")
 }
 
-model commande {
-  id            Int       @id @default(autoincrement())
-  id_user       Int?
-  date_commande DateTime? @default(now()) @db.Timestamp(0)
-  total         Decimal?  @db.Decimal(10, 2)
-  billets       billets[]
-  users         users?    @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "commande_ibfk_1")
-
-  @@index([id_user], map: "id_user")
-}
-
 model commandes {
   id            Int       @id @default(autoincrement())
   id_user       Int?
   date_commande DateTime? @default(now()) @db.Timestamp(0)
   total         Decimal?  @db.Decimal(10, 2)
+  billets       billets[]
   users         users?    @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "commandes_ibfk_1")
 
   @@index([id_user], map: "id_user")
@@ -90,7 +80,6 @@ model users {
   created_at DateTime?    @default(now()) @db.Timestamp(0)
   role       users_role?  @default(user)
   cart_items cart_items[]
-  commande   commande[]
   commandes  commandes[]
 }
 

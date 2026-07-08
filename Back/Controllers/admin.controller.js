@@ -7,6 +7,7 @@ async function adminPage(req, res) {
             titre : "Page administrateur",
             concerts
         });
+        console.log(JSON.stringify(concerts, null, 2));
 
     } catch (err) {
         console.error(err);
@@ -30,7 +31,9 @@ async function createConcert(req, res) {
 async function updateConcert(req, res) {
     try {
         const result = await adminService.updateConcert(req.params.id, req.body);
-        res.json(result);
+        res.status(200).json({
+            success:true
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

@@ -1,12 +1,13 @@
-const { pool } = require("../Database/mySQL");
+const prisma = require("../Database/prisma");
 
 async function findByEmail(email) {
-    const [rows] = await pool.query(
-        "SELECT * FROM users WHERE email = ?",
-        [email]
-    );
 
-    return rows[0] || null;
+    return prisma.users.findUnique({
+        where: {
+            email: email
+        }
+    });
+
 }
 
 module.exports = {
