@@ -26,16 +26,17 @@ async function getCartItems(userId) {
 }
 
 async function getItem(userId, concertId) {
-
+    
     return prisma.cart_items.findFirst({
         where: {
             user_id: userId,
-            concert_id: concertId
+            concert_id: concertId,
+            status: "active"
         }
     });
 }
 
-async function addItem(userId, concertId, quantity, price) {
+async function addItem(userId, concertId, quantity, price, status) {
 
     return prisma.cart_items.create({
         data: {
@@ -43,12 +44,12 @@ async function addItem(userId, concertId, quantity, price) {
             concert_id: concertId,
             quantity,
             price,
-            total: price * quantity,
             status: "active"
         }
     });
+    console.log("ITEM CREE :", item);
 }
-
+    
 async function updateQuantity(id, quantity) {
 
     return prisma.cart_items.update({
@@ -57,52 +58,6 @@ async function updateQuantity(id, quantity) {
         },
         data: {
             quantity
-        }
-    });
-}
-
-async function getCartItems(userId) {
-
-    const items = await prisma.cart_items.findMany({
-
-        where: {
-            user_id: userId,
-            status: "active"
-        },
-
-        include: {
-            concert: true
-        }
-    });
-
-
-    return items.map(item => ({
-
-        id: item.id,
-        concert_id: item.concert_id,
-        quantity: item.quantity,
-        price: item.price,
-        total: item.total,
-
-        ville: item.concert.ville,
-        lieu: item.concert.lieu,
-        date: item.concert.date.toLocaleDateString("fr-FR")
-
-    }));
-}
-async function updateQuantityInCart(id, quantity) {
-
-    return prisma.cart_items.update({
-
-        where:{
-            id:Number(id)
-        },
-
-        data:{
-            quantity,
-            total:{
-                set: quantity * item.price
-            }
         }
     });
 }
@@ -119,11 +74,27 @@ async function deleteItem(userId, cartId) {
     });
 }
 
+async function getActiveCart(userId){
+
+    return prisma.cart_items.findMany({
+
+        where:{
+            user_id:userId,
+            status:"active"
+        },
+
+        include:{
+            concert:true
+        }
+
+    });
+}
+
 module.exports = {
     getItem,
     addItem,
     updateQuantity,
     getCartItems,
-    updateQuantityInCart,
-    deleteItem
+    deleteItem,
+    getActiveCart
 };

@@ -43,6 +43,8 @@ function getCurrentUser(req, res) {
     });
 }
 
+
+
 module.exports = {
     register,
     login,

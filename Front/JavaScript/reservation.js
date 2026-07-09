@@ -296,11 +296,12 @@ document.addEventListener("DOMContentLoaded", () => {
     /* Ajouter un produit au panier */
 
     reservationForm.addEventListener("submit", async(e) => {
-            console.log("SUBMIT FIRED");
             e.preventDefault();
             const concertId = Number(popUpReservation.dataset.concertId);
             const quantity = Number(document.getElementById("nbPlace").value);
             const price = Number(document.getElementById("PU").textContent);
+            const submitButton = reservationForm.querySelector("button[type='submit']");
+            submitButton.disabled = true;
             try {
                 const response = await fetch("/cart/add", {
                     method: "POST",
@@ -321,10 +322,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert(result.message);
             } catch (err) {
                 alert(err.message);
-            }
-    });
+            }finally{
 
-    console.log("JS LOADED");
+        submitButton.disabled = false;
+
+    }
+    });
 
 });
 

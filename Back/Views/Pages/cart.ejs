@@ -83,7 +83,7 @@
             <h5>Total</h5>
             <p class="h4 mb-3" id="globalTotal">0€</p>
 
-            <button class="btn secondary-button" id="checkoutBtn">
+            <button class="btn secondary-button" id="checkoutButton">
                 Valider la commande
             </button>
 
@@ -105,14 +105,58 @@
 </main>
 
 
-<dialog id="checkoutModal" class="p-4">
-    <h2>Confirmation</h2>
-    <p>Confirmer votre commande ?</p>
+<dialog class="popUp" id="popUpValidationCommande" aria-labelledby="popUpValidationCommandeAccessTitle" aria-describedby="popUpValidationCommandeAccessDescription">
 
-    <div class="d-flex gap-2 justify-content-end">
-        <button id="cancelCheckout" class="btn btn-secondary">Annuler</button>
-        <button id="confirmCheckout" class="btn btn-success">Confirmer</button>
+    <div class="modal-content">
+
+        <button type="button" class="closeModal" id="closePopUpValidationCommande">X</button>
+
+
+        <h2>Finaliser la commande</h2>
+
+        <form id="paymentForm">
+
+            <label for="nom">
+                Nom
+            </label>
+            <input 
+                type="text" 
+                id="nom" 
+                name="nom"
+                required
+            >
+            <label for="prenom">
+                Prénom
+            </label>
+            <input 
+                type="text" 
+                id="prenom" 
+                name="prenom"
+                required
+            >
+
+
+            <label for="cardNumber">
+                Numéro de carte
+            </label>
+
+            <input 
+                type="text"
+                id="cardNumber"
+                name="cardNumber"
+                placeholder="0000 0000 0000 0000"
+                required
+            >
+
+
+            <button type="submit">
+                Payer
+            </button>
+
+        </form>
+
     </div>
+
 </dialog>
 
 <%- include('../Partials/contact') %>

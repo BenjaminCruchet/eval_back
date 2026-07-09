@@ -156,10 +156,16 @@ footer{
 }
 
 /* visuel cart */
-.cart-icon {
+
+.logoContainer{
+    display: flex;
+    flex-direction: row;
     position: fixed;
     top: 16px;
     left: 16px;
+}
+.cart-icon {
+
     width: 44px;
     height: 44px;
     display: flex;
@@ -172,18 +178,33 @@ footer{
     z-index: 9999;
   }
 
-  .cart-svg {
+.cart-svg {
     width: 24px;
     height: 24px;
     fill: #222;
   }
 
-  .cart-icon:hover {
+.account-svg {
+    width:40px;
+    height:40px;
+    fill:white;
+}
+
+.account-icon,
+.cart-icon {
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 10px;
+}
+
+.cart-icon:hover,
+.account-icon:hover {
     transform: scale(1.05);
     transition: transform 0.15s ease;
-  }
+}
 
-  #home{
+#home{
     position : absolute;
     fill: #FFFFFF;
     width: clamp(1.5rem,6vw,3.5rem);
@@ -194,4 +215,44 @@ footer{
 
 .register-text{
     font-size : clamp(0.5rem, 2vw, 1.4rem);
+}
+
+/* Gestion modales */
+.closeModal,
+#retour{
+    position: absolute;
+    top: -1em !important;
+    color: #FFFFFF;
+    background-color: black;
+    width: 30px;
+    height: 30px;
+    border: 1px solid white;
+    border-radius: 50%;
+}
+
+.closeModal{
+    right: -1em;
+}
+
+.popUp{
+    overflow: visible;
+    border-radius: 20px;
+    border: 2px solid black;
+    text-align: center;
+}
+.popUpText{
+    margin: 2em;
+}
+
+form{
+    overflow: hidden;
+}
+
+@media(max-width: 768px) {
+    #inputConteneur{
+    display: flex;
+    flex-direction : column;
+    align-items : center;
+    padding: 5px;
+}
 }

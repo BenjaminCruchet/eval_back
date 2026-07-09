@@ -56,19 +56,17 @@ model concert {
   heure      DateTime?    @db.Time(0)
   billets    billets[]
   cart_items cart_items[]
-  places     places[]
+  places     places?
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model places {
-  id_concert Int?
+  id_concert Int?     @unique(map: "unique_places_concert")
   stock      Int?
   prix       Decimal? @db.Decimal(10, 2)
   id         Int      @id @default(autoincrement())
   concert    concert? @relation(fields: [id_concert], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "places_ibfk_1")
-
-  @@index([id_concert], map: "id_concert")
 }
 
 model users {

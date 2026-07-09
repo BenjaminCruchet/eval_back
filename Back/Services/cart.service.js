@@ -14,8 +14,9 @@ async function add(userId, data) {
 
     const existingItem = await cartRepository.getItem(
         userId,
-        concertId
+        concertId,
     );
+    console.log("existingItem :", existingItem);
 
     if (existingItem) {
         await cartRepository.updateQuantity(
@@ -23,6 +24,7 @@ async function add(userId, data) {
             existingItem.quantity + quantity
         );
     } else {
+        
         await cartRepository.addItem(
             userId,
             concertId,

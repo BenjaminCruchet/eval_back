@@ -2,26 +2,16 @@ const express = require('express');
 const router = express.Router();
 const authMiddleware = require("../Middleware/auth.middleware");
 const cartController = require ("../Controllers/cart.controller");
+const commandeController = require ("../Controllers/commandes.controller");
 
+router.get("/", authMiddleware.isAuthenticated, cartController.cartPage);
 
-/* route classique*/
-router.get(
-    "/",
-    authMiddleware.isAuthenticated,
-    cartController.cartPage
-);
+router.post("/add", authMiddleware.isAuthenticated, cartController.add);
 
-/*ajout ligne*/
-router.post(
-    "/add",
-    authMiddleware.isAuthenticated,
-    cartController.add
-);
-
-/* modif dans le cart */
 router.patch("/:id", cartController.updateQuantityInCart);
 
-/* suppress dans le cart */
 router.delete("/:id", cartController.removeItem);
+
+router.post("/validate", commandeController.validateCart);
 
 module.exports = router;

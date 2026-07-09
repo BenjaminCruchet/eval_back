@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({path: "../.env"});
 
 const { connectMongo } = require("./Database/mongoDB");
 const { testMySQL } = require("./Database/mySQL");

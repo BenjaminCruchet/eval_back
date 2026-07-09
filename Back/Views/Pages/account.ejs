@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Mon compte</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+    <link rel="icon" type="image/webp" href="/Images/logo.webp">
+
+    <link rel="stylesheet" href="/CSS/global.css">
+
+</head>
+
+
+<body>
+
+
+<%- include('../Partials/header') %>
+
+
+<main class="container mt-4">
+
+
+    <%- include('../Partials/logbox') %>
+
+
+
+    <!-- Informations utilisateur -->
+
+    <section class="card shadow-sm mb-5">
+
+
+        <div class="card-header">
+
+            <h2 class="h5 mb-0">
+                Mon profil
+            </h2>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <div class="row">
+
+
+                <div class="col-md-6">
+
+
+                    <p>
+                        <strong>Email :</strong>
+                        <%= user.email %>
+                    </p>
+
+
+                    <p>
+                        <strong>Nom :</strong>
+                        <%= user.nom || "Non renseigné" %>
+                    </p>
+
+
+                    <p>
+                        <strong>Prénom :</strong>
+                        <%= user.prenom || "Non renseigné" %>
+                    </p>
+
+
+                </div>
+
+
+                <div class="col-md-6">
+
+
+                    <p>
+                        <strong>Membre depuis :</strong>
+                        <%= user.created_at
+                            ? user.created_at.toLocaleDateString("fr-FR")
+                            : "-"
+                        %>
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+    <!-- Commandes -->
+
+    <section class="card shadow-sm mb-5">
+
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+
+            <h2 class="h5 mb-0">
+                Mes commandes
+            </h2>
+
+
+            <span class="badge bg-primary">
+                <%= user.commandes.length %>
+                commande(s)
+            </span>
+
+
+        </div>
+
+
+
+
+
+        <div class="card-body">
+
+
+
+            <% if(user.commandes.length === 0){ %>
+
+
+                <p class="text-muted mb-0">
+
+                    Vous n'avez encore effectué aucune commande.
+
+                </p>
+
+
+
+            <% } else { %>
+
+
+
+
+                <% user.commandes.forEach(commande => { %>
+
+
+
+                <div class="card mb-3 border">
+
+
+                    <div class="card-header d-flex justify-content-between">
+
+
+                        <span>
+
+                            Commande #
+                            <%= commande.id %>
+
+                        </span>
+
+
+                        <span>
+
+                            <%= commande.date_commande
+                                ? commande.date_commande.toLocaleDateString("fr-FR")
+                                : ""
+                            %>
+
+                        </span>
+
+
+                    </div>
+
+
+
+
+                    <div class="card-body">
+
+
+
+                        <p>
+
+                            Total :
+                            <strong>
+                                <%= commande.total %> €
+                            </strong>
+
+                        </p>
+
+
+
+                        <h6>
+                            Billets
+                        </h6>
+
+
+
+                        <div class="table-responsive">
+
+
+                            <table class="table table-sm align-middle">
+
+
+                                <thead class="table-light">
+
+                                    <tr>
+
+                                        <th>
+                                            Concert
+                                        </th>
+
+                                        <th>
+                                            Lieu
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Quantité
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+
+                                </thead>
+
+
+
+                                <tbody>
+
+
+
+                                <% commande.billets.forEach(billet => { %>
+
+
+
+                                    <tr>
+
+
+                                        <td>
+
+                                            <%= billet.concert.ville %>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <%= billet.concert.lieu %>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <%= billet.concert.date
+                                                ? billet.concert.date.toLocaleDateString("fr-FR")
+                                                : "-"
+                                            %>
+
+                                        </td>
+
+
+                                        <td>
+
+                                            <%= billet.quantity %>
+
+                                        </td>
+
+
+                                        <td>
+
+
+                                            <button
+                                                class="btn btn-outline-primary btn-sm">
+
+                                                Télécharger billet
+
+                                            </button>
+
+
+                                        </td>
+
+
+                                    </tr>
+
+
+
+                                <% }) %>
+
+
+
+                                </tbody>
+
+
+                            </table>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <% }) %>
+
+
+
+            <% } %>
+
+
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+    <!-- Actions compte -->
+
+    <section class="card shadow-sm mb-5">
+
+
+        <div class="card-header">
+
+
+            <h2 class="h5 mb-0">
+
+                Gestion du compte
+
+            </h2>
+
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <button
+                class="btn btn-warning">
+
+                Modifier mes informations
+
+            </button>
+
+
+
+            <button
+                class="btn btn-danger ms-2">
+
+                Modifier mon mot de passe
+
+            </button>
+
+
+
+        </div>
+
+
+    </section>
+
+
+
+
+</main>
+
+
+
+
+<%- include('../Partials/footer') %>
+
+
+
+<script src="/JavaScript/authUI.js"></script>
+
+
+</body>
+
+
+</html>
