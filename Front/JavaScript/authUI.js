@@ -65,9 +65,9 @@ async function renderAuthUI() {
         form.style.display = "none";
 
         loginBox.innerHTML = `
-            <p>Connecté : ${data.user.email}</p>
+            <p style="color:white" >Connecté : ${data.user.email}</p>
             <form action="/api/auth/logout" method="POST">
-            <button> Déconnexion</button>
+            <button class="secondary-button"> Déconnexion</button>
             </form>
         `;
     }
