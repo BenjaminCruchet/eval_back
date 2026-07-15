@@ -2,7 +2,7 @@ const ticketRepository = require("../Repository/ticket.repository");
 
 async function download(ticketId, userId) {
 
-    const ticket = await ticketRepository.getTicket(ticketId);
+    const ticket = await ticketRepository.getTicket(ticketId, userId);
 
     if (!ticket) {
         throw new Error("Billet introuvable");
