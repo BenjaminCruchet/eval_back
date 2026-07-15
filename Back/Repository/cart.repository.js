@@ -1,5 +1,5 @@
+const { Prisma } = require("@prisma/client");
 const prisma = require("../Database/prisma");
-
 
 async function getCartItems(userId) {
 
