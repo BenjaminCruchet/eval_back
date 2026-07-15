@@ -1,34 +1,49 @@
-const { pool } = require("../Database/mySQL");
+const reservationService = require("../Services/reservation.service");
 
-async function getReservationPage(req, res) {
-    try {
+async function getReservationPage(req,res){
 
-        const [concerts] = await pool.query(`
-            SELECT 
-                c.id,
-                c.ville,
-                c.lieu,
-                DATE_FORMAT(c.date, '%d/%m/%Y') AS date,
-                p.stock,
-                p.prix
-            FROM concert c
-            JOIN places p ON p.id_concert = c.id
-            ORDER BY c.date ASC
-        `);
+    try{
 
-        res.render("reservation", {
-            titre : "Toutes les dates",
-            concerts
+        const concerts = await reservationService.getReservationPage();
+
+        res.render("reservation",{
+            titre:"Toutes les dates",
+            concerts,
         });
 
-      
+    }catch(err){
 
-    } catch (err) {
         console.error(err);
-        res.status(500).send("Erreur serveur");
+
+        res.status(500).render("reservation",{
+            titre:"Toutes les dates",
+            concerts:[]
+        });
+    }
+}
+
+async function search(req, res) {
+
+    try {
+        const userId = req.session.user?.id || null;
+        const { query } = req.body;
+
+        await logs.search(userId, query);
+
+        res.status(204).send();
+
+
+    } catch(err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            message:"Erreur log recherche"
+        });
     }
 }
 
 module.exports = {
-    getReservationPage
+    getReservationPage,
+    search
 };

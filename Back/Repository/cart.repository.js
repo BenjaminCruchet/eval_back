@@ -21,7 +21,7 @@ async function getCartItems(userId) {
         total:item.total,
         ville:item.concert.ville,
         lieu:item.concert.lieu,
-        date:item.concert.date.toLocaleDateString("fr-FR")
+        date:item.concert.date ? item.concert.date.toLocaleDateString("fr-FR") : "-"
     }));
 }
 
@@ -36,7 +36,7 @@ async function getItem(userId, concertId) {
     });
 }
 
-async function addItem(userId, concertId, quantity, price, status) {
+async function addItem(userId, concertId, quantity, price) {
 
     return prisma.cart_items.create({
         data: {
@@ -47,7 +47,6 @@ async function addItem(userId, concertId, quantity, price, status) {
             status: "active"
         }
     });
-    console.log("ITEM CREE :", item);
 }
     
 async function updateQuantity(id, quantity) {
@@ -90,11 +89,27 @@ async function getActiveCart(userId){
     });
 }
 
+async function clearCart(userId){
+
+    return prisma.cart_items.deleteMany({
+
+        where:{
+
+            user_id:userId,
+            status:"active"
+
+        }
+
+    });
+
+}
+
 module.exports = {
     getItem,
     addItem,
     updateQuantity,
     getCartItems,
     deleteItem,
-    getActiveCart
+    getActiveCart,
+    clearCart
 };

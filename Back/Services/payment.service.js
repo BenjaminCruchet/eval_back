@@ -7,9 +7,6 @@ async function processPayment(data){
         throw new Error("Informations de paiement manquantes");
     }
 
-
-    // simulation
-
     return {
         success:true,
         transactionId:"TEST-" + Date.now()

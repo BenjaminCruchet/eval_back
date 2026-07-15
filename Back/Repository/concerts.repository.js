@@ -11,8 +11,8 @@ async function getAllConcerts() {
     return concerts.map(concert => ({
         ...concert,
         formatedDate: concert.date.toLocaleDateString("fr-FR"),
-        stock: concert.places[0]?.stock,
-        prix: concert.places[0]?.prix
+        stock: concert.places?.stock,
+        prix: concert.places?.prix
     }));
 }
 
@@ -31,8 +31,8 @@ async function getConcertById(id) {
 
     return {
         ...concert,
-        stock: concert.places[0]?.stock,
-        prix: concert.places[0]?.prix,
+        stock: concert.places?.stock,
+        prix: concert.places?.prix,
         formatedDate: concert.date.toLocaleDateString("fr-FR")
     };
 }
@@ -53,6 +53,7 @@ async function createConcert(data) {
                 }
             }
         },
+        
         include: {
             places: true
         }
@@ -63,43 +64,50 @@ async function updateConcert(id, data) {
 
     const { ville, lieu, date, stock, prix } = data;
 
-    await prisma.concert.update({
-        where:{
-            id:Number(id)
-        },
-        data:{
-            ville,
-            lieu,
-            date:new Date(date)
-        }
-    });
+    return prisma.$transaction(async (tx) => {
+
+        const concert = await tx.concert.update({
+
+            where:{
+                id:Number(id)
+            },
+
+            data:{
+                ville,
+                lieu,
+                date:new Date(date)
+            }
+        });
 
 
-    await prisma.places.update({
-        where:{
-            id_concert:Number(id)
-        },
-        data:{
-            stock:Number(stock),
-            prix:Number(prix)
-        }
+        const place = await tx.places.update({
+
+            where:{
+                id_concert:Number(id)
+            },
+
+            data:{
+                stock:Number(stock),
+                prix:Number(prix)
+            }
+        });
+
+        return {
+            concert,
+            place
+        };
     });
+
 }
 
 async function deleteConcert(id){
 
-    await prisma.places.deleteMany({
-        where:{
-            id_concert:Number(id)
-        }
-    });
-
-
-    await prisma.concert.delete({
+    return prisma.concert.delete({
         where:{
             id:Number(id)
         }
     });
+
 }
 
 module.exports = {

@@ -85,18 +85,6 @@ async function updateConcert(id) {
 
 document.querySelectorAll(".delete-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
-        const id = btn.dataset.id;
-
-        if (!confirm("Supprimer ce concert ?")) return;
-
-        const res = await fetch(`/admin/concerts/${id}`, {
-            method: "DELETE"
-        });
-
-        if (res.ok) {
-            location.reload();
-        } else {
-            alert("Erreur suppression");
-        }
+         await deleteConcert(btn.dataset.id);
     });
 });

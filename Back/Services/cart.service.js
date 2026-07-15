@@ -1,61 +1,100 @@
 const cartRepository = require("../Repository/cart.repository");
+const concertRepository = require("../Repository/concerts.repository");
 const logs = require("./log.service");
 
-async function add(userId, data) {
-    const { concertId, quantity, price } = data;
 
-    if (!concertId || !quantity || !price) {
+async function add(userId, data) {
+
+    const { concertId, quantity } = data;
+
+    if(!concertId || !quantity){
         throw new Error("Données manquantes");
     }
 
-    if (quantity <= 0) {
+    if(quantity <= 0){
         throw new Error("Quantité invalide");
     }
 
-    const existingItem = await cartRepository.getItem(
-        userId,
-        concertId,
-    );
-    console.log("existingItem :", existingItem);
+    const concert = await concertRepository.getConcertById(concertId);
 
-    if (existingItem) {
+    if(!concert){
+        throw new Error("Concert introuvable");
+    }
+
+    if(quantity > concert.stock){
+        throw new Error("Stock insuffisant");
+    }
+
+    const existingItem = await cartRepository.getItem(userId, Number(concertId));
+
+    if(existingItem){
+
         await cartRepository.updateQuantity(
             existingItem.id,
-            existingItem.quantity + quantity
+            existingItem.quantity + Number(quantity)
         );
+
     } else {
-        
+
         await cartRepository.addItem(
             userId,
-            concertId,
-            quantity,
-            price
+            Number(concertId),
+            Number(quantity),
+            concert.prix
         );
+
     }
-    await logs.addCart(userId, concertId, quantity);
+
+    await logs.addCart(
+        userId,
+        concertId,
+        quantity
+    );
+
     return {
-        message: "Ajout au panier réussi"
+        message:"Ajout au panier réussi"
     };
-
 }
 
-async function getCart(userId) {
-    return await cartRepository.getCartItems(userId);
+async function getCart(userId){
+
+    return cartRepository.getCartItems(userId);
 }
 
-async function updateQuantity(userId, cartId, quantity) {
+async function updateQuantity(userId, cartId, quantity){
+
+
+    const result = await cartRepository.updateQuantity(cartId, quantity);
+
     await logs.updateCart(userId, cartId, quantity);
-    return cartRepository.updateQuantity(cartId, quantity);
+
+    return result;
 }
 
-async function removeItem(userId, cartId) {
+async function removeItem(userId, cartId){
+
+
+    const result = await cartRepository.deleteItem(userId, cartId);
+
     await logs.removeCart(userId, cartId);
-    return cartRepository.deleteItem(userId, cartId);
+
+    return result;
 }
+
+async function clearCart(userId){
+
+    const result = await cartRepository.clearCart(userId);
+
+    await logs.clearCart(userId);
+
+    return result;
+}
+
 
 module.exports = {
     add,
     getCart,
     updateQuantity,
-    removeItem
+    removeItem,
+    clearCart
 };

@@ -1,0 +1,58 @@
+@startuml
+
+class User {
+    +id : Int
+    +email : String
+    +password : String
+    +nom : String
+    +prenom : String
+    +created_at : DateTime
+    +role : Enum
+}
+
+class Concert {
+    +id : Int
+    +ville : String
+    +lieu : String
+    +date : Date
+    +heure : Time
+}
+
+class Place {
+    +id : Int
+    +stock : Int
+    +prix : Decimal
+}
+
+class CartItem {
+    +id : Int
+    +quantity : Int
+    +price : Decimal
+    +total : Decimal
+    +status : Enum
+}
+
+class Commande {
+    +id : Int
+    +date_commande : DateTime
+    +total : Decimal
+}
+
+class Billet {
+    +id : Int
+    +quantity : Int
+    +prix : Decimal
+}
+
+
+User "1" --> "0..*" Commande : passe
+User "1" --> "0..*" CartItem : possède
+
+Concert "1" --> "0..*" CartItem : concerne
+Concert "1" --> "0..*" Billet : génère
+
+Commande "1" --> "0..*" Billet : contient
+
+Concert "1" --> "1" Place : possède
+
+@enduml

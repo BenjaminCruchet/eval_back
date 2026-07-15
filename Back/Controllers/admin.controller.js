@@ -1,13 +1,15 @@
 const adminService = require("../Services/admin.service");
 
 async function adminPage(req, res) {
+
     try {
+
         const concerts = await adminService.getAllConcerts();
+
         res.render('admin', {
             titre : "Page administrateur",
             concerts
         });
-        console.log(JSON.stringify(concerts, null, 2));
 
     } catch (err) {
         console.error(err);
@@ -20,31 +22,53 @@ async function adminPage(req, res) {
 }
 
 async function createConcert(req, res) {
+
     try {
+
         const result = await adminService.createConcert(req.body);
+
         res.json(result);
+
     } catch (err) {
-        res.status(500).json({ message: err.message });
+
+        res.status(500).json({ 
+            message: err.message 
+        });
     }
 }
 
 async function updateConcert(req, res) {
+
     try {
+
         const result = await adminService.updateConcert(req.params.id, req.body);
         res.status(200).json({
             success:true
         });
+
     } catch (err) {
-        res.status(500).json({ message: err.message });
+
+        res.status(500).json({
+             message: err.message 
+        });
     }
 }
 
 async function deleteConcert(req, res) {
+    
     try {
+
         await adminService.deleteConcert(req.params.id);
-        res.json({ message: "Concert supprimé" });
+
+        res.json({ 
+            message: "Concert supprimé" 
+        });
+
     } catch (err) {
-        res.status(500).json({ message: err.message });
+
+        res.status(500).json({ 
+            message: err.message 
+        });
     }
 }
 

@@ -1,16 +1,16 @@
 const prisma = require("../Database/prisma");
 
-async function createCommande(data) {
+async function createCommande(data, tx = prisma){
 
-    return prisma.commandes.create({
+    return tx.commandes.create({
         data
     });
 
 }
 
-async function createBillets(data) {
+async function createBillets(data, tx = prisma){
 
-    return prisma.billets.createMany({
+    return tx.billets.createMany({
         data
     });
 

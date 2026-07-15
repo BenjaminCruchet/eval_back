@@ -1,12 +1,10 @@
 const cartRepository = require("../Repository/cart.repository");
-const commandeRepository = require("../Repository/commandes.repository");
 const prisma = require("../Database/prisma");
 
 async function validateOrder(userId){
 
 
     const cart = await cartRepository.getActiveCart(userId);
-
 
     if(cart.length === 0){
         throw new Error("Panier vide");
@@ -20,25 +18,20 @@ async function validateOrder(userId){
         );
 
         const commande = await tx.commandes.create({
-
             data:{
                 id_user:userId,
                 total
             }
-
         });
 
         await tx.billets.createMany({
 
             data: cart.map(item=>({
-
                 id_commande:commande.id,
                 id_concert:item.concert_id,
                 quantity:item.quantity,
                 prix:item.price
-
             }))
-
         });
 
 
@@ -55,9 +48,7 @@ async function validateOrder(userId){
                         decrement:item.quantity
                     }
                 }
-
             });
-
         }
 
         await tx.cart_items.updateMany({
@@ -70,19 +61,11 @@ async function validateOrder(userId){
             data:{
                 status:"converted"
             }
-
         });
 
-
-
         return commande;
-
-
     });
-
-
 }
-
 
 module.exports={
     validateOrder

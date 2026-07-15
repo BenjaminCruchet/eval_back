@@ -8,10 +8,12 @@ router.get("/", authMiddleware.isAuthenticated, cartController.cartPage);
 
 router.post("/add", authMiddleware.isAuthenticated, cartController.add);
 
-router.patch("/:id", cartController.updateQuantityInCart);
+router.patch("/:id", authMiddleware.isAuthenticated, cartController.updateQuantityInCart);
 
-router.delete("/:id", cartController.removeItem);
+router.delete("/", authMiddleware.isAuthenticated, cartController.clearCart);
 
-router.post("/validate", commandeController.validateCart);
+router.delete("/:id", authMiddleware.isAuthenticated, cartController.removeItem);
+
+router.post("/validate", authMiddleware.isAuthenticated, commandeController.validateCart);
 
 module.exports = router;

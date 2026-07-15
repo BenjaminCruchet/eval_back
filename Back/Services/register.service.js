@@ -1,32 +1,30 @@
-const {pool} = require("../Database/mySQL");
 const bcrypt = require("bcrypt");
+const userRepository = require("../Repository/user.repository");
 const logs = require("./log.service");
 
 async function register(data) {
+
     const { email, password } = data;
 
     if (!email || !password) {
         throw new Error("Tous les champs sont obligatoires");
     }
 
-    const [users] = await pool.query(
-        "SELECT * FROM users WHERE email = ?",
-        [email]
-    );
+    const existingUser = await userRepository.getUserByEmail(email);
 
-    if (users.length > 0) {
+    if (existingUser) {
         throw new Error("Email déjà utilisé");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await pool.query(
-        "INSERT INTO users (email, password) VALUES (?, ?)",
-        [email, hashedPassword]
-    );
+    const user = await userRepository.createUser(email, hashedPassword);
 
-    return { message: "Utilisateur créé avec succès" };
-    
+    await logs.register(user.id, email);
+
+    return {
+        message: "Utilisateur créé avec succès"
+    };
 }
 
 module.exports = {

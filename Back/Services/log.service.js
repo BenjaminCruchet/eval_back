@@ -44,11 +44,41 @@ function updateCart(userId, cartItemId, quantity) {
     });
 }
 
+function search(userId, query) {
+
+    return logEvent({
+        type: "SEARCH",
+        userId,
+        query
+    });
+}
+
+function register(userId, email) {
+
+    return logEvent({
+        type: "REGISTER",
+        userId,
+        email
+    });
+}
+
+function clearCart(userId) {
+
+    return logEvent({
+        type: "CLEAR_CART",
+        userId
+    });
+
+}
+
 module.exports = {
     logEvent,
     login,
     logout,
     addCart,
     removeCart,
-    updateCart
+    updateCart,
+    search,
+    register,
+    clearCart
 };
