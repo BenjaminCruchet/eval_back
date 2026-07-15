@@ -16,7 +16,7 @@ const ticketRoute = require("./Routes/ticket.route");
 const accountRoute = require("./Routes/account.route");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 async function startServer(){
 
