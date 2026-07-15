@@ -5,8 +5,6 @@ let db;
 
 async function connectMongo() {
 
-    console.log("ENV MONGO =", process.env.MONGO_URI);
-
     client = new MongoClient(uri);
 
     await client.connect();

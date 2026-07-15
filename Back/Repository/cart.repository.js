@@ -44,6 +44,7 @@ async function addItem(userId, concertId, quantity, price) {
             concert_id: concertId,
             quantity,
             price,
+            total: new Prisma.Decimal(price).mul(quantity),
             status: "active"
         }
     });
