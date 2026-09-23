@@ -1,86 +1,85 @@
 const cartService = require("../Services/cart.service");
 
 async function add(req, res) {
-
     try {
-        
         const userId = req.session.user.id;
         const result = await cartService.add(userId, req.body);
 
         return res.status(201).json(result);
 
     } catch (err) {
-
-        return res.status(500).json({
-            message: err.message
+        return res.status(400).json({
+            message:err.message
         });
     }
 }
 
 async function cartPage(req, res) {
-
-   try {
-
+    try {
         const userId = req.session.user.id;
         const items = await cartService.getCart(userId);
 
         res.render("cart", {
-            titre : "Mon panier",
-            items: items || []
+            titre:"Mon panier",
+            items:items || []
         });
 
     } catch (err) {
-
         console.error(err);
 
         res.render("cart", {
-            titre : "Mon panier",
-            items: [],
+            titre:"Mon panier",
+            items:[],
             error:"Impossible de charger le panier"
         });
     }
 }
 
 async function updateQuantityInCart(req, res) {
+    try {
+        const userId = req.session.user.id;
+        const cartId = Number(req.params.id);
+        const { quantity } = req.body;
 
-    const userId = req.session.user.id;
-    const cartId = Number(req.params.id);
-    const { quantity } = req.body;
+        await cartService.updateQuantity(
+            userId,
+            cartId,
+            quantity
+        );
 
-    await cartService.updateQuantity(userId, cartId, quantity);
+        res.json({
+            message:"Quantité mise à jour"
+        });
 
-    res.json({ 
-        message: "updated" 
-    });
+    } catch (err) {
+        res.status(400).json({
+            message:err.message
+        });
+    }
 }
 
 async function removeItem(req, res) {
-
     try {
-
         const userId = req.session.user.id;
         const cartId = Number(req.params.id);
 
         await cartService.removeItem(userId, cartId);
 
-        res.json({ 
-            message: "Item supprimé du panier" 
+        res.json({
+            message:"Item supprimé du panier"
         });
 
     } catch (err) {
-
         console.error(err);
 
-        res.status(500).json({ 
-            message: "Erreur serveur" 
+        res.status(500).json({
+            message:"Erreur serveur"
         });
     }
 }
 
-async function clearCart(req,res){
-
-    try{
-
+async function clearCart(req,res) {
+    try {
         const userId = req.session.user.id;
 
         await cartService.clearCart(userId);
@@ -90,8 +89,7 @@ async function clearCart(req,res){
             message:"Panier vidé"
         });
 
-    }catch(err){
-
+    } catch(err) {
         return res.status(500).json({
             message:err.message
         });

@@ -1,16 +1,12 @@
 const PDFDocument = require("pdfkit");
-
 const ticketService = require("../Services/ticket.service");
 
 async function download(req, res) {
-
-    console.log("DOWNLOAD TICKET APPELÉ", req.params.id);
-
     try {
-
-        const ticket = await ticketService.download(req.params.id, req.session.user.id);
-        console.log("USER SESSION :", req.session.user);
-        console.log("TICKET :", ticket);
+        const ticket = await ticketService.download(
+            req.params.id,
+            req.session.user.id
+        );
 
         const doc = new PDFDocument();
 
@@ -36,11 +32,15 @@ async function download(req, res) {
 
         doc.text(`Salle : ${ticket.concert.lieu}`);
 
-        doc.text(`Date : ${ticket.concert.date.toLocaleDateString("fr-FR")}`);
+        doc.text(
+            `Date : ${ticket.concert.date.toLocaleDateString("fr-FR")}`
+        );
 
         doc.moveDown();
 
-        doc.text(`Nom : ${ticket.commandes.users.firstname} ${ticket.commandes.users.lastname}`);
+        doc.text(
+            `Nom : ${ticket.commandes.users.prenom || ""} ${ticket.commandes.users.nom || ""}`
+        );
 
         doc.text(`Nombre de places : ${ticket.quantity}`);
 
@@ -52,16 +52,11 @@ async function download(req, res) {
 
         doc.end();
 
+    } catch(err) {
+        console.error(err);
+
+        res.status(500).send(err.message);
     }
-
-    catch(err){
-
-    console.error(err);
-
-    res.status(500).send(err.message);
-
-}
-
 }
 
 module.exports = {

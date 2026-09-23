@@ -2,7 +2,6 @@ const { Prisma } = require("@prisma/client");
 const prisma = require("../Database/prisma");
 
 async function getCartItems(userId) {
-
     const items = await prisma.cart_items.findMany({
         where:{
             user_id:userId,
@@ -26,87 +25,82 @@ async function getCartItems(userId) {
 }
 
 async function getItem(userId, concertId) {
-    
     return prisma.cart_items.findFirst({
-        where: {
-            user_id: userId,
-            concert_id: concertId,
-            status: "active"
+        where:{
+            user_id:userId,
+            concert_id:concertId,
+            status:"active"
+        }
+    });
+}
+
+async function getItemById(userId, cartId) {
+    return prisma.cart_items.findFirst({
+        where:{
+            id:Number(cartId),
+            user_id:userId,
+            status:"active"
         }
     });
 }
 
 async function addItem(userId, concertId, quantity, price) {
-
     return prisma.cart_items.create({
-        data: {
-            user_id: userId,
-            concert_id: concertId,
+        data:{
+            user_id:userId,
+            concert_id:concertId,
             quantity,
             price,
-            total: new Prisma.Decimal(price).mul(quantity),
-            status: "active"
+            status:"active"
         }
     });
 }
-    
-async function updateQuantity(id, quantity) {
 
+async function updateQuantity(id, quantity, total) {
     return prisma.cart_items.update({
-        where: {
-            id: Number(id)
+        where:{
+            id:Number(id)
         },
-        data: {
-            quantity
+        data:{
+            quantity,
         }
     });
 }
 
 async function deleteItem(userId, cartId) {
-
     return prisma.cart_items.deleteMany({
-
         where:{
             id:Number(cartId),
-            user_id:userId
+            user_id:userId,
+            status:"active"
         }
-
     });
 }
 
-async function getActiveCart(userId){
-
+async function getActiveCart(userId) {
     return prisma.cart_items.findMany({
-
         where:{
             user_id:userId,
             status:"active"
         },
-
         include:{
             concert:true
         }
-
     });
 }
 
-async function clearCart(userId){
-
+async function clearCart(userId) {
     return prisma.cart_items.deleteMany({
-
         where:{
-
             user_id:userId,
             status:"active"
-
         }
-
     });
-
 }
 
 module.exports = {
     getItem,
+    getItemById,
     addItem,
     updateQuantity,
     getCartItems,

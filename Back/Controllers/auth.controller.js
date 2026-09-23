@@ -2,37 +2,20 @@ const registerService = require("../Services/register.service");
 const loginService = require("../Services/login.service");
 
 const register = async (req, res) => {
- console.log("REGISTER BODY :", req.body);
-    try {
-    
-        const result = await registerService.register(req.body);
+    console.log("REGISTER BODY :", req.body);
 
-        res.status(201).json(result);
+    const result = await registerService.register(req.body);
 
-    } catch (err) {
-
-        res.status(400).json({ 
-            message: err.message 
-        });
-    }
+    res.status(201).json(result);
 };
 
 const login = async (req, res) => {
 
-    try {
+    await loginService.login(req.body, req.session);
 
-        await loginService.login(req.body, req.session);
-
-        return res.json({
-            success:true
-        });
-        
-    } catch (err) {
-
-        res.status(401).json({ 
-            message: err.message 
-        });
-    }
+    return res.json({
+        success:true
+    });
 };
 
 function logout(req, res) {

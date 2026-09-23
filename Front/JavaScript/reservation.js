@@ -256,19 +256,23 @@ document.addEventListener("DOMContentLoaded", () => {
     
     /* validation recherche ("loupe" et submit) */
 
+
     async function logSearch(){
+        try {
+            await fetch("/logs/search", {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    query:searchBarre.value
+                })
+            });
+        } catch(err) {
+            console.error("Erreur lors de l'enregistrement de la recherche :", err);
+        }
+    };
 
-    await fetch("/logs/search", {
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-
-        body:JSON.stringify({
-            query: searchInput.value
-        })
-    });
-}
     loupe.addEventListener("click", async function(){
         MEFTableau();
         errorSearchForm();

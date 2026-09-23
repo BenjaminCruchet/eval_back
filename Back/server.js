@@ -2,7 +2,9 @@ const express = require("express");
 const path = require("path");
 const session = require("express-session");
 const dotenv = require("dotenv");
-dotenv.config();
+dotenv.config({
+    path: path.join(__dirname, "../.env")
+});
 
 const { connectMongo } = require("./Database/mongoDB");
 
@@ -14,6 +16,8 @@ const cartRoute = require("./Routes/cart.route");
 const adminRoute = require("./Routes/admin.route");
 const ticketRoute = require("./Routes/ticket.route");
 const accountRoute = require("./Routes/account.route");
+const logRoute = require("./Routes/log.route");
+const errorMiddleware = require("./Middleware/error.middleware");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -48,6 +52,8 @@ async function startServer(){
     app.use("/admin", adminRoute);
     app.use("/ticket", ticketRoute);
     app.use("/account", accountRoute);
+    app.use("/logs", logRoute);
+    app.use(errorMiddleware);
 
 
 }

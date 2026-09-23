@@ -2,16 +2,15 @@ const cartRepository = require("../Repository/cart.repository");
 const concertRepository = require("../Repository/concerts.repository");
 const logs = require("./log.service");
 
-
 async function add(userId, data) {
-
     const { concertId, quantity } = data;
+    const parsedQuantity = Number(quantity);
 
     if(!concertId || !quantity){
         throw new Error("Données manquantes");
     }
 
-    if(quantity <= 0){
+    if(!Number.isInteger(parsedQuantity) || parsedQuantity <= 0){
         throw new Error("Quantité invalide");
     }
 
@@ -21,34 +20,35 @@ async function add(userId, data) {
         throw new Error("Concert introuvable");
     }
 
-    if(quantity > concert.stock){
+    const existingItem = await cartRepository.getItem(userId, Number(concertId));
+    const quantityInCart = existingItem ? existingItem.quantity : 0;
+    const newQuantity = quantityInCart + parsedQuantity;
+
+    if(newQuantity > concert.stock){
         throw new Error("Stock insuffisant");
     }
 
-    const existingItem = await cartRepository.getItem(userId, Number(concertId));
-
     if(existingItem){
+        const total = Number(existingItem.price) * newQuantity;
 
         await cartRepository.updateQuantity(
             existingItem.id,
-            existingItem.quantity + Number(quantity)
+            newQuantity,
+            total
         );
-
     } else {
-
         await cartRepository.addItem(
             userId,
             Number(concertId),
-            Number(quantity),
+            parsedQuantity,
             concert.prix
         );
-
     }
 
     await logs.addCart(
         userId,
         concertId,
-        quantity
+        parsedQuantity
     );
 
     return {
@@ -56,24 +56,51 @@ async function add(userId, data) {
     };
 }
 
-async function getCart(userId){
-
+async function getCart(userId) {
     return cartRepository.getCartItems(userId);
 }
 
-async function updateQuantity(userId, cartId, quantity){
+async function updateQuantity(userId, cartId, quantity) {
+    const parsedQuantity = Number(quantity);
 
+    if(!Number.isInteger(parsedQuantity) || parsedQuantity <= 0){
+        throw new Error("Quantité invalide");
+    }
 
-    const result = await cartRepository.updateQuantity(cartId, quantity);
+    const item = await cartRepository.getItemById(userId, cartId);
 
-    await logs.updateCart(userId, cartId, quantity);
+    if(!item){
+        throw new Error("Article du panier introuvable");
+    }
+
+    const concert = await concertRepository.getConcertById(item.concert_id);
+
+    if(!concert){
+        throw new Error("Concert introuvable");
+    }
+
+    if(parsedQuantity > concert.stock){
+        throw new Error("Stock insuffisant");
+    }
+
+    const total = Number(item.price) * parsedQuantity;
+
+    const result = await cartRepository.updateQuantity(
+        item.id,
+        parsedQuantity,
+        total
+    );
+
+    await logs.updateCart(
+        userId,
+        cartId,
+        parsedQuantity
+    );
 
     return result;
 }
 
-async function removeItem(userId, cartId){
-
-
+async function removeItem(userId, cartId) {
     const result = await cartRepository.deleteItem(userId, cartId);
 
     await logs.removeCart(userId, cartId);
@@ -81,15 +108,13 @@ async function removeItem(userId, cartId){
     return result;
 }
 
-async function clearCart(userId){
-
+async function clearCart(userId) {
     const result = await cartRepository.clearCart(userId);
 
     await logs.clearCart(userId);
 
     return result;
 }
-
 
 module.exports = {
     add,
@@ -98,3 +123,4 @@ module.exports = {
     removeItem,
     clearCart
 };
+
