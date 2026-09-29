@@ -205,12 +205,13 @@ footer{
 }
 
 #home{
-    position : absolute;
-    fill: #FFFFFF;
-    width: clamp(1.5rem,6vw,3.5rem);
-    height: clamp(1.5rem,6vw,3.5rem);
-    left : 10px;
-    bottom : 1.5em;
+   position: absolute;
+   fill: #FFFFFF;
+   width: clamp(1.5rem,6vw,3.5rem);
+   height: clamp(1.5rem,6vw,3.5rem);
+   left: 10px;
+   top: 50%;
+   transform: translateY(-50%);
 }
 
 .register-text{
@@ -246,6 +247,57 @@ footer{
 
 form{
     overflow: hidden;
+}
+
+#registerForm {
+   display: flex;
+   flex-direction: column;
+   gap: 15px;
+   width: min(90vw, 400px);
+   padding: 30px;
+   margin: 3em auto;
+   background-color: rgba(0, 0, 0, 0.80);
+   border: 2px solid #FF0000;
+   border-radius: 20px;
+   box-sizing: border-box;
+}
+
+#registerForm input {
+   width: 100%;
+   box-sizing: border-box;
+   padding: 12px 15px;
+   border: 2px solid transparent;
+   border-radius: 8px;
+   font-size: 1rem;
+   font-family: inherit;
+}
+
+#registerForm input:focus {
+   outline: none;
+   border-color: #FF0000;
+}
+
+#registerForm button {
+   padding: 12px;
+   border: 2px solid black;
+   border-radius: 8px;
+   background-color: rgba(255, 0, 0, 0.65);
+   color: white;
+   font-size: 1rem;
+   cursor: pointer;
+   transition: all 0.2s linear;
+}
+
+#registerForm button:hover,
+#registerForm button:focus {
+   background-color: #ff1a1a;
+   box-shadow: 0 3px 0 2px rgba(0,0,0,0.6);
+   transform: translateY(-2px);
+}
+
+#message {
+   color: white;
+   text-align: center;
 }
 
 @media(max-width: 768px) {
